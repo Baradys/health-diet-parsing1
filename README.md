@@ -1,5 +1,6 @@
-1) Make .env file beside script file.
-2) Fill it with your proxy data as:
+1) Use 'pip install -r requirements' in terminal.
+2) Make .env file beside script file.
+3) Fill it with your proxy data as:
     LOGIN = '\*\*\*\*\*'
     PASSWORD = '\*\*\*\*\*'
-3) Make data directory beside your script file to save json data.
+4) Make data directory beside your script file to save json data.
