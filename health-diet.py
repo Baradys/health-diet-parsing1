@@ -51,7 +51,7 @@ async def main():
             url = f'https://health-diet.ru/api2/base_of_food/common/{counter}.json?10'
             if counter % 100 == 0:
                 print(counter)
-            headers = get_headers()
+                headers = get_headers()
             task = asyncio.create_task(get_data(session, url, headers))
             tasks.append(task)
             await asyncio.gather(*tasks)
