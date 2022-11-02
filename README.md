@@ -1,4 +1,4 @@
-1) Use 'pip install -r requirements' in terminal.
+1) Use 'pip install -r requirements.txt' in terminal.
 2) Make .env file beside script file.
 3) Fill it with your proxy data as:
     LOGIN = '\*\*\*\*\*'
