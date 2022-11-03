@@ -7,6 +7,9 @@ You should do some things before using scripts.
 LOGIN = '\*\*\*\*\*'
 PASSWORD = '\*\*\*\*\*'
 2. Health's scrapper:
-    1. Create 'data' directory.
+    1. Create 'health/data' directory.
 3. Recordpower's scrapper:
-    1. Create 'data/media' directory.
+    1. Create 'recordpower/data/media' directory.
+4. Tury.ru scrapper:
+    1. Create 'tury/data' directory.
+    2. Input prefer country from list.
