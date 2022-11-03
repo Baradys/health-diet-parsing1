@@ -32,7 +32,7 @@ def get_data():
         if not hotels:
             break
         for link in hotels:
-            link_re = re.search(r"(?<=\d-).+(?=-\d)", link)
+            link_re = re.search(r"(?<=\d-).+", link)
             if not link_re:
                 continue
             print(link)
