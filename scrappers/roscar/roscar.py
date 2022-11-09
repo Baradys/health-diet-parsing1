@@ -1,6 +1,8 @@
+import datetime
 import json
 
 import requests
+import datetime
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 '
@@ -13,6 +15,7 @@ def get_data():
     data_result = []
     tires = ['legkovye', 'diskont', 'legkogruzovye', 'gruzovye', 'selskohozyaystvenye', 'specshiny']
     for tire_type in tires:
+        print(f'--------------\n{tire_type} in progress\n--------------')
         type_result = []
         url = f'https://roscarservis.ru/catalog/{tire_type}'
         response = requests.get(url=url, headers=headers)
@@ -36,13 +39,20 @@ def get_data():
                     'img': item_img,
                     'url': item_url,
                 })
+            print(f'{page} of {pages_count} pages have been handled')
         data_result.append({
-            f'{tire_type}': type_result
+            f'{start_time.strftime("%d-%m-%Y")}-{tire_type}': type_result
         })
-        # Готов данные для добавления в json файл. Осталось указать дату к tire_type и создавать файл
+    return data_result
+    # Готов данные для добавления в json файл. Осталось указать дату к tire_type и создавать файл
+
 
 def main():
-    get_data()
+    global start_time
+    start_time = datetime.datetime.now()
+    with open('data/result.json', 'w', encoding='utf-8') as file:
+        json.dump(get_data(), file, indent=4, ensure_ascii=False)
+    print(datetime.datetime.now() - start_time)
 
 
 if __name__ == '__main__':
