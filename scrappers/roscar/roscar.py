@@ -1,29 +1,37 @@
-import datetime
 import json
+import os
 
 import requests
 import datetime
 
+from dotenv import load_dotenv
+from fake_useragent import UserAgent
+
+load_dotenv()
+
+TEST_LOGIN = str(os.environ.get('LOGIN'))
+TEST_PASSWORD = str(os.environ.get('PASSWORD'))
+
+ua = UserAgent()
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 '
-                  'Safari/537.36',
+    'User-Agent': ua.random,
     'X-Requested-With': 'XMLHttpRequest'
 }
 
 
 def get_data():
     data_result = []
+    proxy = {'https': f'socks5://{TEST_LOGIN}:{TEST_PASSWORD}@194.242.126.219:8000'}
     tires = ['legkovye', 'diskont', 'legkogruzovye', 'gruzovye', 'selskohozyaystvenye', 'specshiny']
     for tire_type in tires:
         print(f'--------------\n{tire_type} in progress\n--------------')
         type_result = []
         url = f'https://roscarservis.ru/catalog/{tire_type}'
-        response = requests.get(url=url, headers=headers)
+        response = requests.get(url=url, headers=headers, proxies=proxy)
         pages_count = response.json()['pagesCount']
         for page in range(1, pages_count + 1):
             url = f'https://roscarservis.ru/catalog/{tire_type}/?set_filter=Y&sort%5Brecommendations%5D=asc&PAGEN_1={page}'
-            response = requests.get(url=url, headers=headers)
-
+            response = requests.get(url=url, headers=headers, proxies=proxy)
             data = response.json()
             items = data['items']
             for item in items:
@@ -44,7 +52,6 @@ def get_data():
             f'{start_time.strftime("%d-%m-%Y")}-{tire_type}': type_result
         })
     return data_result
-    # Готов данные для добавления в json файл. Осталось указать дату к tire_type и создавать файл
 
 
 def main():
