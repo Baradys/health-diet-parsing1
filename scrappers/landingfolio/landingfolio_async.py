@@ -74,12 +74,19 @@ async def write_file(session, item_name, url, retry=5):
         try:
             async with session.get(url) as response:
                 async for part in response.content.iter_chunked(1024):
+                    await asyncio.sleep(0)
                     await file.write(part)
         except asyncio.exceptions.TimeoutError:
             if retry:
-                print(f'[INFO] retry={retry} => {url}')
+                print(f'[INFO] TimeoutError retry={retry} => {url}')
                 await asyncio.sleep(60)
                 return await write_file(session, item_name, url, retry=(retry - 1))
+        except aiohttp.ClientPayloadError:
+            if retry:
+                print(f'[INFO] PayloadError retry={retry} => {url}')
+                await asyncio.sleep(60)
+                return await write_file(session, item_name, url, retry=(retry - 1))
+
 
 
 async def gather_images():
