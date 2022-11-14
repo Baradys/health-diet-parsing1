@@ -61,18 +61,32 @@ async def gather_data(tyre):
         await asyncio.gather(*tasks)
 
 
+async def gather_loss_data(loss_pages):
+    async with aiohttp.ClientSession() as session:
+        tasks = []
+        for page in loss_pages:
+            tyre = list(*map(lambda item: item, page.items()))
+            tyre_type = tyre[0]
+            page_number = tyre[1]
+            task = asyncio.create_task(get_page_data(session, page_number, tyre_type))
+            tasks.append(task)
+        await asyncio.gather(*tasks)
+
+
 def main():
     start_time = time.time()
     tires = ['legkovye', 'diskont', 'legkogruzovye', 'gruzovye', 'selskohozyaystvenye', 'specshiny']
     for tyre in tires:
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         asyncio.run(gather_data(tyre))
+    if lose_pages:
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+        asyncio.run(gather_loss_data(lose_pages))
     current_time = datetime.datetime.now().strftime('%m-%d-%Y')
     with open(f'data/{current_time}roscar_async.json', 'w', encoding='utf-8') as file:
         json.dump(result, file, indent=4, ensure_ascii=False)
     diff_time = time.time() - start_time
     print(f'Затраченное время на работу скрипта - {diff_time}')
-    print(lose_pages)
 
 
 if __name__ == '__main__':
