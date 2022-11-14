@@ -1,10 +1,11 @@
-import asyncio
-import json
 import time
+import json
+import os
 
+import asyncio
 import aiofiles
 import aiohttp
-import os
+
 from fake_useragent import UserAgent
 
 ua = UserAgent()
@@ -14,7 +15,6 @@ headers = {
 
 pages = []
 result = []
-counter = 0
 
 
 async def get_pages(session):
@@ -69,7 +69,6 @@ async def gather_data():
 
 
 async def write_file(session, item_name, url, retry=5):
-    global counter
     async with aiofiles.open(item_name, 'wb') as file:
         try:
             async with session.get(url) as response:
@@ -78,15 +77,14 @@ async def write_file(session, item_name, url, retry=5):
                     await file.write(part)
         except asyncio.exceptions.TimeoutError:
             if retry:
-                print(f'[INFO] TimeoutError retry={retry} => {url}')
+                print(f'[INFO] TimeoutError: retry={retry} => {url}')
                 await asyncio.sleep(60)
                 return await write_file(session, item_name, url, retry=(retry - 1))
         except aiohttp.ClientPayloadError:
             if retry:
-                print(f'[INFO] PayloadError retry={retry} => {url}')
+                print(f'[INFO] PayloadError: retry={retry} => {url}')
                 await asyncio.sleep(60)
                 return await write_file(session, item_name, url, retry=(retry - 1))
-
 
 
 async def gather_images():
