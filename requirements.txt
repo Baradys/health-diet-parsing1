@@ -35,3 +35,4 @@ img2pdf~=0.4.4
 beautifulsoup4~=4.11.1
 asyncio~=3.4.3
 aiofiles~=22.1.0
+selenium~=4.5.0
