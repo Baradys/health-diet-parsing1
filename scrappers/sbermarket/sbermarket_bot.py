@@ -74,7 +74,7 @@ async def get_discount_search(message: types.Message, state: FSMContext):
                f'{hbold("Старая цена")} {item.get("old_price")}\n' \
                f'👩🏿‍🎓👩🏿‍🎓{hbold("Новая цена")} -{item.get("discount")}%: {item.get("item_price")}👩🏿‍🎓👩🏿‍🎓\n'
         await message.answer(card)
-    await state.reset_state(with_data=False)
+    await state.reset_state(with_data=True)
 
 
 def main():
