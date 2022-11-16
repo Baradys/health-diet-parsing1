@@ -13,7 +13,7 @@ from selenium.webdriver.common.by import By
 from fake_useragent import UserAgent
 from urllib.parse import unquote
 
-from aiohttp_socks import ProxyConnector, ChainProxyConnector
+from aiohttp_socks import ProxyConnector
 
 load_dotenv()
 
@@ -102,13 +102,7 @@ async def get_data(session, url, urls_list, retry=5):
                 counter += 1
                 print(f'{counter}/{urls_list}')
             else:
-                print(soup.text)  # Нужно проверить 512 статус код, каптча не пускает на сайт.
-                try:
-                    soup.find('button', class_='captcha-button').click()
-                except Exception as ex:
-                    print(ex)
-                finally:
-                    await asyncio.sleep(5)
+                await asyncio.sleep(60)
     except Exception as ex:
         if retry:
             print(f'[INFO] {ex}: retry={retry} => {url}')

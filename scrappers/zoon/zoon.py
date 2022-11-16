@@ -52,7 +52,7 @@ def get_data(urls):
     with open(urls, encoding='utf-8') as file:
         urls_list = [i.strip() for i in file.readlines()]
     counter = 1
-    for url in urls_list[:31]:
+    for url in urls_list:
         response = requests.get(url=url, headers=headers)
         soup = BeautifulSoup(response.text, 'lxml')
         try:
