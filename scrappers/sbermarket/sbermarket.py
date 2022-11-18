@@ -5,10 +5,9 @@ import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-items_result = []
-
 
 def get_data(search, user_id=None):
+    items_result = []
     url = f'https://sbermegamarket.ru/catalog/?q={search}#?filters=%7B"4CB2C27EAAFC4EB39378C4B7487E6C9E"%3A%5B"1"%5D%7D'
     with webdriver.Chrome() as browser:
         browser.get(url=url)
@@ -48,6 +47,7 @@ def get_data(search, user_id=None):
                             'url': item_url,
                         }
                     )
+    items_result = sorted(items_result, key=(lambda x: x['discount']), reverse=True)
     if not os.path.exists('data'):
         os.mkdir('data')
     with open(f'data/sbermarket-{user_id}.json', 'w', encoding='utf-8') as file:
